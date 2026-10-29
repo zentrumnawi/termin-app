@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lernraum Chemie – Terminbuchung</title>
+    <style>
+      :root {
+        --goethe-blue: #003a70;
+        --goethe-blue-light: #0d5aa7;
+        --goethe-blue-soft: #eaf2fb;
+        --accent: #00a3e0;
+        --danger: #c62828;
+        --success: #2e7d32;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --border: #d1d5db;
+        --bg: #f6f8fb;
+        --white: #ffffff;
+        --shadow: 0 10px 25px rgba(0,0,0,0.08);
+        --radius: 14px;
+      }
+  
+      * {
+        box-sizing: border-box;
+      }
+  
+      html, body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+      }
+  
+      body {
+        line-height: 1.5;
+      }
+  
+      .container {
+        width: min(1100px, calc(100% - 24px));
+        margin: 0 auto;
+      }
+  
+      header {
+        background: linear-gradient(135deg, var(--goethe-blue), var(--goethe-blue-light));
+        color: white;
+        padding: 20px 0 28px;
+        box-shadow: var(--shadow);
+      }
+  
+      .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+  
+      .brand {
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        font-size: 1rem;
+      }
+  
+      .admin-toggle {
+        background: rgba(255,255,255,0.12);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.22);
+        border-radius: 10px;
+        padding: 10px 14px;
+        cursor: pointer;
+        font-weight: 600;
+      }
+  
+      .hero h1 {
+        margin: 0 0 8px;
+        font-size: 1.8rem;
+      }
+  
+      .hero p {
+        margin: 0;
+        max-width: 780px;
+        color: rgba(255,255,255,0.92);
+      }
+  
+      main {
+        padding: 18px 0 40px;
+      }
+  
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+  
+      .card {
+        background: var(--white);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+  
+      .card h2, .card h3 {
+        margin-top: 0;
+        color: var(--goethe-blue);
+      }
+  
+      .notice {
+        background: var(--goethe-blue-soft);
+        border-left: 4px solid var(--accent);
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+      }
+  
+      .slot-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 14px;
+      }
+  
+      .slot {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+        display: grid;
+        gap: 8px;
+        background: #fff;
+      }
+  
+      .slot-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 10px;
+      }
+  
+      .slot-title {
+        font-weight: 700;
+        color: var(--goethe-blue);
+      }
+  
+      .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+  
+      .badge.free {
+        background: #e8f5e9;
+        color: var(--success);
+      }
+  
+      .badge.booked {
+        background: #fff3e0;
+        color: #ef6c00;
+      }
+  
+      .badge.cancelled {
+        background: #ffebee;
+        color: var(--danger);
+      }
+  
+      .slot-meta {
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+  
+      .slot-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+  
+      button, .btn {
+        border: none;
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        font-weight: 600;
+      }
+  
+      .btn-primary {
+        background: var(--goethe-blue);
+        color: white;
+      }
+  
+      .btn-secondary {
+        background: #eef2f7;
+        color: var(--text);
+      }
+  
+      .btn-danger {
+        background: var(--danger);
+        color: white;
+      }
+  
+      .btn-success {
+        background: var(--success);
+        color: white;
+      }
+  
+      .btn:disabled, button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+  
+      form {
+        display: grid;
+        gap: 14px;
+      }
+  
+      .form-row {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 1fr;
+      }
+  
+      label {
+        display: grid;
+        gap: 6px;
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+  
+      input, textarea, select {
+        width: 100%;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 11px 12px;
+        font: inherit;
+        background: white;
+      }
+  
+      textarea {
+        resize: vertical;
+        min-height: 90px;
+      }
+  
+      .muted {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+  
+      .hidden {
+        display: none !important;
+      }
+  
+      .status {
+        padding: 12px 14px;
+        border-radius: 10px;
+        font-size: 0.95rem;
+      }
+  
+      .status.success {
+        background: #e8f5e9;
+        color: var(--success);
+      }
+  
+      .status.error {
+        background: #ffebee;
+        color: var(--danger);
+      }
+  
+      .status.info {
+        background: #e3f2fd;
+        color: var(--goethe-blue);
+      }
+  
+      .admin-panel {
+        border-top: 4px solid var(--goethe-blue);
+      }
+  
+      .footer {
+        margin-top: 26px;
+        color: var(--muted);
+        font-size: 0.9rem;
+        text-align: center;
+      }
+  
+      .small {
+        font-size: 0.85rem;
+      }
+  
+      @media (min-width: 800px) {
+        .grid {
+          grid-template-columns: 1.2fr 0.8fr;
+          align-items: start;
+        }
+  
+        .hero h1 {
+          font-size: 2.2rem;
+        }
+  
+        .form-row.two {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

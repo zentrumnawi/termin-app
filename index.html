@@ -175,15 +175,6 @@
         flex-wrap: wrap;
       }
   
-      button, .btn {
-        border: none;
-        border-radius: 10px;
-        padding: 10px 14px;
-        font-size: 0.95rem;
-        cursor: pointer;
-        font-weight: 600;
-      }
-  
       .btn-primary {
         background: var(--goethe-blue);
         color: white;
@@ -219,26 +210,46 @@
         gap: 14px;
         grid-template-columns: 1fr;
       }
-  
-      label {
+
+      #bookingForm.v-form {
         display: grid;
-        gap: 6px;
+        gap: 14px;
+      }
+
+      #bookingForm .v-input {
+        margin-bottom: 0;
+        font: inherit;
+      }
+
+      #bookingForm .v-label {
         font-weight: 600;
         font-size: 0.95rem;
+        opacity: 1;
+        color: var(--text);
       }
-  
-      input, textarea, select {
-        width: 100%;
-        border: 1px solid var(--border);
+
+      #bookingForm .v-field {
         border-radius: 10px;
-        padding: 11px 12px;
         font: inherit;
-        background: white;
+        --v-field-border-opacity: 1;
+        color: var(--text);
       }
-  
-      textarea {
-        resize: vertical;
-        min-height: 90px;
+
+      #bookingForm .v-btn {
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        letter-spacing: 0;
+        text-transform: none;
+        background: var(--goethe-blue);
+        color: white;
+        height: auto;
+        padding: 10px 14px;
+        box-shadow: none;
+      }
+
+      #bookingForm .v-btn:hover {
+        background: var(--goethe-blue-light);
       }
   
       .muted {

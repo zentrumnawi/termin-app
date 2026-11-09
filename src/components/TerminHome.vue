@@ -33,31 +33,64 @@
       <aside>
         <section class="card">
           <h3>Termin buchen</h3>
-          <form id="bookingForm">
-            <label>
-              Gewählter Termin
-              <select id="bookingSlot" required>
-                <option value="">Bitte freien Termin auswählen</option>
-              </select>
-            </label>
+          <v-form id="bookingForm" @submit.prevent="onBookingSubmit">
+            <v-select
+              id="bookingSlot"
+              v-model="booking.slotId"
+              :items="shiftItems"
+              item-title="title"
+              item-value="value"
+              label="Gewählter Termin"
+              placeholder="Bitte freien Termin auswählen"
+              variant="outlined"
+              density="comfortable"
+              hide-details="auto"
+              :rules="[rules.required]"
+              :loading="shiftsLoading"
+              required
+            />
 
-            <label>
-              Name *
-              <input type="text" id="name" required placeholder="Vor- und Nachname" />
-            </label>
+            <v-text-field
+              id="name"
+              v-model="booking.name"
+              label="Name *"
+              placeholder="Vor- und Nachname"
+              variant="outlined"
+              density="comfortable"
+              hide-details="auto"
+              :rules="[rules.required]"
+              required
+            />
 
-            <label>
-              E-Mail-Adresse *
-              <input type="email" id="email" required placeholder="name@example.org" />
-            </label>
+            <v-text-field
+              id="email"
+              v-model="booking.email"
+              type="email"
+              label="E-Mail-Adresse *"
+              placeholder="name@example.org"
+              variant="outlined"
+              density="comfortable"
+              hide-details="auto"
+              :rules="[rules.required, rules.email]"
+              required
+            />
 
-            <label>
-              Kommentar (optional)
-              <textarea id="comment" placeholder="Optionaler Hinweis"></textarea>
-            </label>
+            <v-textarea
+              id="comment"
+              v-model="booking.comment"
+              label="Kommentar (optional)"
+              placeholder="Optionaler Hinweis"
+              variant="outlined"
+              density="comfortable"
+              hide-details="auto"
+              rows="3"
+              auto-grow
+            />
 
-            <button type="submit" class="btn-primary">Termin verbindlich buchen</button>
-          </form>
+            <v-btn type="submit" block>
+              Termin verbindlich buchen
+            </v-btn>
+          </v-form>
         </section>
 
         <section class="card admin-panel hidden" id="adminSection">
@@ -123,5 +156,51 @@
       Lernraum Chemie · Goethe-inspiriertes Design · Mobile First
     </div>
   </main>
+</template>
 
-  </template>
+<script setup lang="ts">
+import { computed, onMounted, reactive, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useShiftsStore } from '@/stores/shifts'
+
+const shiftsStore = useShiftsStore()
+const { shifts } = storeToRefs(shiftsStore)
+
+const shiftsLoading = ref(false)
+
+const booking = reactive({
+  slotId: null as string | null,
+  name: '',
+  email: '',
+  comment: '',
+})
+
+const rules = {
+  required: (value: unknown) => Boolean(value) || 'Pflichtfeld',
+  email: (value: string) => /.+@.+\..+/.test(value) || 'Ungültige E-Mail-Adresse',
+}
+
+const shiftItems = computed(() =>
+  shifts.value.map((shift) => ({
+    title: `${shift.date} · ${shift.time}`,
+    value: shift.id,
+  })),
+)
+
+async function loadShifts() {
+  shiftsLoading.value = true
+  try {
+    await shiftsStore.getShifts()
+  } finally {
+    shiftsLoading.value = false
+  }
+}
+
+function onBookingSubmit() {
+  // Submit to create appointment
+}
+
+onMounted(() => {
+  void loadShifts()
+})
+</script>
